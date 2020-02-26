@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:getflutter/getflutter.dart';
 import 'package:products_manager/model/product_model.dart';
 import 'package:products_manager/repository/product_repository.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -11,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: HomePage(),
     );
@@ -45,52 +48,96 @@ class _HomePageState extends State<HomePage> {
         future: productsFuture,
         builder: (_, snapshot) {
           if (snapshot.hasData) {
-            return GridView.builder(
-              gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-              itemBuilder: (_, i) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            final products = snapshot.data;
+            return ListView.builder(
+              itemBuilder: (_, i) => GFCard(
+                title: GFListTile(
+                  titleText: products[i].nomeProdu,
+                ),
+                content: Column(
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
-                        Center(
-                          child: Text(
-                            snapshot.data[i].description,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        Text(
+                          'Código:',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                        SizedBox(width: 12),
                         Text(
-                          'Código: ${snapshot.data[i].cdProduct}',
+                          products[i].codiProdu,
                           style: TextStyle(
                             fontSize: 18,
                           ),
-                        ),
-                        Text(
-                          'Embalagem: ${snapshot.data[i].embalagem}',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Estoque',
-                          ),
-                          keyboardType: TextInputType.number,
                         ),
                       ],
                     ),
-                  ),
+                    SizedBox(height: 12),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          'Embalagem:',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Text(
+                          products[i].embaEntra,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          'Qtd Embalagem Entra:',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Text(
+                          products[i].quanEmbaEntra,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          'Qtd Atual do Produto:',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: TextField(
+                            controller: TextEditingController(
+                                text: products[i].atuaProdu),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
-              itemCount: snapshot.data.length,
+              itemCount: products.length,
             );
           }
           return Center(

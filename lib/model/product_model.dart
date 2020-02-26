@@ -1,31 +1,32 @@
 class ProductModel {
+  String codiProdu;
+  String nomeProdu;
+  String embaEntra;
+  String quanEmbaEntra;
+  String atuaProdu;
+
   ProductModel(
-      {this.cdProduct, this.description, this.embalagem, this.qtdStock});
+      {this.codiProdu,
+      this.nomeProdu,
+      this.embaEntra,
+      this.quanEmbaEntra,
+      this.atuaProdu});
 
-  int cdProduct;
-  String description;
-  String embalagem;
-  double qtdStock;
-
-  static ProductModel fromJson(Map<String, dynamic> json) {
-    return ProductModel()
-      ..cdProduct = json['cdProduct']
-      ..description = json['description']
-      ..embalagem = json['embalagem']
-      ..qtdStock = json['qtdStock'];
+  ProductModel.fromJson(Map<String, dynamic> json) {
+    codiProdu = json['codi_produ'];
+    nomeProdu = json['nome_produ'];
+    embaEntra = json['emba_entra'];
+    quanEmbaEntra = json['quan_emba_entra'];
+    atuaProdu = json['atua_produ'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'cdProduct': cdProduct,
-      'description': description,
-      'embalagem': embalagem,
-      'qtdStock': qtdStock,
-    };
-  }
-
-  @override
-  String toString() {
-    return 'ProductModel{cdProduct: $cdProduct, description: $description, embalagem: $embalagem, qtdStock: $qtdStock}';
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['codi_produ'] = this.codiProdu;
+    data['nome_produ'] = this.nomeProdu;
+    data['emba_entra'] = this.embaEntra;
+    data['quan_emba_entra'] = this.quanEmbaEntra;
+    data['atua_produ'] = this.atuaProdu;
+    return data;
   }
 }
